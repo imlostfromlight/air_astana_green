@@ -1,112 +1,136 @@
-function fmt(n) {
-  return n.toLocaleString('ru')
-}
+const NAVY = '#1B2B4B'
+const GOLD = '#B09040'
+
+function fmt(n) { return n.toLocaleString('ru') }
 
 export default function PaymentStep({
   basePrice, baggageFee, subtotal,
   roundUp, setRoundUp,
   donation, total, roundedTotal,
-  onNext, onBack
+  onNext, onBack,
 }) {
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       {/* Order summary */}
-      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-        <div className="px-6 py-4 border-b border-slate-100">
-          <h2 className="text-lg font-bold text-slate-800">Итог заказа</h2>
-          <p className="text-sm text-slate-500">Алматы → Астана · 25 апреля 2026</p>
+      <div className="bg-white border rounded overflow-hidden" style={{ borderColor: '#e0e4eb' }}>
+        <div className="px-5 py-4 border-b" style={{ borderColor: '#e0e4eb', background: '#f8f9fb' }}>
+          <p className="font-bold text-base" style={{ color: NAVY }}>Итог заказа</p>
+          <p className="text-xs text-gray-400 mt-0.5">Алматы → Астана · 25 апреля 2026 · KC 121</p>
         </div>
-        <div className="px-6 py-4 space-y-3">
+        <div className="px-5 py-4 space-y-3">
           <div className="flex justify-between text-sm">
-            <span className="text-slate-600">Билет (эконом)</span>
-            <span className="font-medium text-slate-800">{fmt(basePrice)} ₸</span>
+            <span className="text-gray-500">Билет (эконом)</span>
+            <span className="font-medium" style={{ color: NAVY }}>{fmt(basePrice)} ₸</span>
           </div>
           {baggageFee > 0 && (
             <div className="flex justify-between text-sm">
-              <span className="text-slate-600">Дополнительный багаж</span>
-              <span className="font-medium text-slate-800">+{fmt(baggageFee)} ₸</span>
+              <span className="text-gray-500">Дополнительный багаж</span>
+              <span className="font-medium" style={{ color: NAVY }}>+{fmt(baggageFee)} ₸</span>
             </div>
           )}
           {roundUp && (
             <div className="flex justify-between text-sm">
-              <span className="text-green-600 flex items-center gap-1">
-                <span>🌿</span> Округление (донат природе)
+              <span className="flex items-center gap-1" style={{ color: '#16a34a' }}>
+                <span>🌿</span> Green Fund (округление)
               </span>
-              <span className="font-medium text-green-600">+{fmt(donation)} ₸</span>
+              <span className="font-medium" style={{ color: '#16a34a' }}>+{fmt(donation)} ₸</span>
             </div>
           )}
-          <div className="border-t border-slate-100 pt-3 flex justify-between">
-            <span className="font-bold text-slate-800">Итого</span>
-            <span className="font-bold text-xl text-slate-800">{fmt(total)} ₸</span>
+          <div className="pt-3 border-t flex justify-between items-baseline" style={{ borderColor: '#e0e4eb' }}>
+            <span className="font-bold text-sm" style={{ color: NAVY }}>ИТОГО</span>
+            <span className="text-2xl font-bold" style={{ color: NAVY }}>{fmt(total)} ₸</span>
           </div>
         </div>
       </div>
 
-      {/* Green round-up card */}
+      {/* Green round-up block */}
       <div
+        className="border rounded overflow-hidden cursor-pointer transition-all"
+        style={{
+          borderColor: roundUp ? GOLD : '#e0e4eb',
+          background: roundUp ? '#fdf8ee' : '#fff',
+        }}
         onClick={() => setRoundUp(!roundUp)}
-        className={`rounded-2xl border-2 cursor-pointer transition-all overflow-hidden
-          ${roundUp ? 'border-green-500 bg-green-50' : 'border-slate-200 bg-white hover:border-green-300'}`}
       >
         <div className="px-5 py-4 flex items-start gap-4">
-          <div className={`w-10 h-10 rounded-full flex items-center justify-center text-xl flex-shrink-0 mt-0.5
-            ${roundUp ? 'bg-green-500' : 'bg-slate-100'}`}>
-            {roundUp ? '✓' : '🌱'}
+          {/* Custom checkbox */}
+          <div
+            className="w-6 h-6 rounded border-2 flex items-center justify-center shrink-0 mt-0.5 transition-all"
+            style={{
+              borderColor: roundUp ? GOLD : '#d1d5db',
+              background: roundUp ? GOLD : '#fff',
+            }}
+          >
+            {roundUp && (
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M2 6l3 3 5-5" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            )}
           </div>
-          <div className="flex-1">
+
+          <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
-              <p className={`font-bold text-sm ${roundUp ? 'text-green-800' : 'text-slate-800'}`}>
-                Округлить до {fmt(roundedTotal)} ₸
+              <p className="font-semibold text-sm" style={{ color: NAVY }}>
+                Округлить сумму до {fmt(roundedTotal)} ₸
               </p>
-              <span className="bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded-full font-medium">
-                +{fmt(donation)} ₸ природе
+              <span
+                className="text-xs px-2 py-0.5 rounded font-medium"
+                style={{ background: '#f5edd6', color: GOLD, border: `1px solid #e8d5a0` }}
+              >
+                +{fmt(donation)} ₸
               </span>
             </div>
-            <p className={`text-sm mt-1 ${roundUp ? 'text-green-700' : 'text-slate-500'}`}>
+            <p className="text-xs text-gray-400 mt-1">
               Разница пойдёт в фонд посадки деревьев и компенсации выбросов CO₂ от авиарейсов Казахстана.
             </p>
             {roundUp && (
-              <p className="text-xs text-green-600 mt-2 font-medium">
-                🌳 Ваш взнос поможет посадить деревья, которые поглотят выбросы этого рейса
+              <p className="text-xs mt-2 font-medium" style={{ color: '#16a34a' }}>
+                🌳 Ваш взнос поможет компенсировать выбросы этого рейса
               </p>
             )}
           </div>
         </div>
 
         {!roundUp && (
-          <div className="bg-slate-50 border-t border-slate-100 px-5 py-2">
-            <p className="text-xs text-slate-400 text-center">
-              Нажмите чтобы добавить — всего {fmt(donation)} ₸
-            </p>
+          <div className="px-5 py-2 border-t text-center" style={{ borderColor: '#e0e4eb', background: '#f8f9fb' }}>
+            <p className="text-xs text-gray-400">Нажмите, чтобы добавить — всего {fmt(donation)} ₸</p>
           </div>
         )}
       </div>
 
-      {/* CO2 stats */}
-      <div className="grid grid-cols-3 gap-3">
+      {/* CO₂ stats row */}
+      <div className="grid grid-cols-3 gap-2">
         {[
           { icon: '✈️', label: 'Выброс рейса', value: '~87 кг CO₂' },
           { icon: '🌳', label: 'Деревьев на год', value: '4 дерева' },
-          { icon: '💚', label: 'Ваш взнос', value: roundUp ? `${fmt(donation)} ₸` : '0 ₸' },
+          { icon: '💚', label: 'Ваш взнос', value: roundUp ? `${fmt(donation)} ₸` : '0 ₸', highlight: roundUp },
         ].map(s => (
-          <div key={s.label} className="bg-white border border-slate-200 rounded-xl p-3 text-center">
+          <div
+            key={s.label}
+            className="p-3 text-center border rounded"
+            style={{ background: '#fff', borderColor: '#e0e4eb' }}
+          >
             <p className="text-xl">{s.icon}</p>
-            <p className="text-xs text-slate-400 mt-1">{s.label}</p>
-            <p className={`text-sm font-bold mt-0.5 ${s.label === 'Ваш взнос' && roundUp ? 'text-green-600' : 'text-slate-700'}`}>
+            <p className="text-xs text-gray-400 mt-1">{s.label}</p>
+            <p className="text-sm font-bold mt-0.5" style={{ color: s.highlight ? '#16a34a' : NAVY }}>
               {s.value}
             </p>
           </div>
         ))}
       </div>
 
-      {/* Pay button */}
       <div className="flex gap-3">
-        <button onClick={onBack} className="flex-1 border-2 border-slate-300 text-slate-600 font-semibold py-3 rounded-xl hover:bg-slate-50 transition-colors">
+        <button
+          onClick={onBack}
+          className="flex-1 py-3 text-sm font-semibold transition-colors hover:bg-gray-50"
+          style={{ border: `1px solid #e0e4eb`, color: NAVY, borderRadius: '2px', background: '#fff' }}
+        >
           ← Назад
         </button>
         <button
           onClick={onNext}
-          className="flex-grow bg-sky-600 hover:bg-sky-700 text-white font-bold px-8 py-3 rounded-xl transition-colors text-base"
+          className="grow py-3.5 text-sm font-bold uppercase tracking-wide transition-opacity hover:opacity-90"
+          style={{ background: GOLD, color: '#fff', borderRadius: '2px' }}
         >
           Оплатить {fmt(total)} ₸
         </button>

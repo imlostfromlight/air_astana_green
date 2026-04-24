@@ -1,58 +1,62 @@
-function fmt(n) {
-  return n.toLocaleString('ru')
-}
+const NAVY = '#1B2B4B'
+const GOLD = '#B09040'
+
+function fmt(n) { return n.toLocaleString('ru') }
 
 export default function SuccessStep({ total, roundUp, donation }) {
   return (
-    <div className="space-y-4 text-center">
-      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 px-6 py-8">
-        <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center text-3xl mx-auto">
-          ✅
+    <div className="space-y-3">
+      {/* Confirmation card */}
+      <div className="bg-white border rounded overflow-hidden text-center" style={{ borderColor: '#e0e4eb' }}>
+        <div className="px-5 pt-8 pb-5">
+          <div
+            className="w-16 h-16 rounded-full flex items-center justify-center text-2xl mx-auto"
+            style={{ background: '#f5edd6', border: `2px solid ${GOLD}` }}
+          >
+            ✓
+          </div>
+          <h2 className="text-xl font-bold mt-4" style={{ color: NAVY }}>Билет оплачен!</h2>
+          <p className="text-sm text-gray-400 mt-1">Подтверждение отправлено на вашу почту</p>
         </div>
-        <h2 className="text-2xl font-bold text-slate-800 mt-4">Билет оплачен!</h2>
-        <p className="text-slate-500 mt-2">Подтверждение отправлено на вашу почту</p>
 
-        <div className="mt-6 bg-slate-50 rounded-xl p-4 text-left space-y-2">
-          <div className="flex justify-between text-sm">
-            <span className="text-slate-500">Маршрут</span>
-            <span className="font-medium text-slate-800">Алматы → Астана</span>
-          </div>
-          <div className="flex justify-between text-sm">
-            <span className="text-slate-500">Рейс</span>
-            <span className="font-medium text-slate-800">KC 121 · 25 апреля 2026</span>
-          </div>
-          <div className="flex justify-between text-sm">
-            <span className="text-slate-500">Вылет</span>
-            <span className="font-medium text-slate-800">06:30</span>
-          </div>
-          <div className="flex justify-between text-sm border-t border-slate-200 pt-2 mt-2">
-            <span className="text-slate-700 font-semibold">Итого оплачено</span>
-            <span className="font-bold text-slate-800">{fmt(total)} ₸</span>
+        <div className="mx-5 mb-5 p-4 rounded text-left space-y-2.5" style={{ background: '#f8f9fb', border: '1px solid #e0e4eb' }}>
+          {[
+            { label: 'Маршрут',  value: 'Алматы → Астана' },
+            { label: 'Рейс',     value: 'KC 121 · 25 апреля 2026' },
+            { label: 'Вылет',    value: '06:30' },
+          ].map(row => (
+            <div key={row.label} className="flex justify-between text-sm">
+              <span className="text-gray-400">{row.label}</span>
+              <span className="font-medium" style={{ color: NAVY }}>{row.value}</span>
+            </div>
+          ))}
+          <div className="pt-2.5 border-t flex justify-between items-baseline" style={{ borderColor: '#e0e4eb' }}>
+            <span className="font-bold text-sm" style={{ color: NAVY }}>ИТОГО ОПЛАЧЕНО</span>
+            <span className="font-bold text-xl" style={{ color: NAVY }}>{fmt(total)} ₸</span>
           </div>
         </div>
       </div>
 
+      {/* Green donation result */}
       {roundUp && (
-        <div className="bg-green-50 border-2 border-green-200 rounded-2xl px-6 py-5">
-          <div className="text-4xl mb-3">🌳</div>
-          <h3 className="text-green-800 font-bold text-lg">Спасибо за заботу о природе!</h3>
-          <p className="text-green-700 mt-1 text-sm">
-            Вы пожертвовали <span className="font-bold">{fmt(donation)} ₸</span> в фонд компенсации выбросов CO₂.
-          </p>
-          <p className="text-green-600 text-sm mt-2">
-            Эти средства пойдут на посадку деревьев в рамках программы Green Kazakhstan.
-          </p>
-
-          <div className="mt-4 grid grid-cols-3 gap-3 text-center">
+        <div className="border rounded overflow-hidden" style={{ borderColor: '#e8d5a0', background: '#fdf8ee' }}>
+          <div className="px-5 py-4 text-center">
+            <div className="text-3xl mb-2">🌳</div>
+            <p className="font-bold text-base" style={{ color: NAVY }}>Спасибо за заботу о природе!</p>
+            <p className="text-sm text-gray-500 mt-1">
+              Вы передали <span className="font-semibold" style={{ color: GOLD }}>{fmt(donation)} ₸</span> в фонд компенсации выбросов CO₂
+            </p>
+          </div>
+          <div className="grid grid-cols-3 divide-x border-t" style={{ borderColor: '#e8d5a0', divideColor: '#e8d5a0' }}>
             {[
-              { icon: '🌱', val: '1', label: 'рейс' },
-              { icon: '🌳', val: '4', label: 'дерева' },
-              { icon: '💨', val: '87 кг', label: 'CO₂ компенсировано' },
+              { icon: '🌱', val: '1',     label: 'рейс' },
+              { icon: '🌳', val: '4',     label: 'дерева' },
+              { icon: '💨', val: '87 кг', label: 'CO₂' },
             ].map(s => (
-              <div key={s.label} className="bg-white rounded-xl p-3 border border-green-100">
-                <p className="text-xl">{s.icon}</p>
-                <p className="font-bold text-green-700 text-base">{s.val}</p>
-                <p className="text-xs text-green-500">{s.label}</p>
+              <div key={s.label} className="py-3 text-center">
+                <p className="text-lg">{s.icon}</p>
+                <p className="font-bold text-sm mt-0.5" style={{ color: NAVY }}>{s.val}</p>
+                <p className="text-xs text-gray-400">{s.label}</p>
               </div>
             ))}
           </div>
@@ -60,16 +64,18 @@ export default function SuccessStep({ total, roundUp, donation }) {
       )}
 
       {!roundUp && (
-        <div className="bg-sky-50 border border-sky-200 rounded-xl px-5 py-4 text-left">
-          <p className="text-sky-700 text-sm">
-            💡 В следующий раз попробуйте округлить сумму — небольшой взнос поможет компенсировать CO₂ от перелёта.
-          </p>
+        <div
+          className="rounded px-4 py-3.5 text-sm"
+          style={{ background: '#f5edd6', border: `1px solid #e8d5a0`, color: '#78580a' }}
+        >
+          💡 В следующий раз попробуйте округлить сумму — небольшой взнос поможет компенсировать CO₂ от перелёта.
         </div>
       )}
 
       <button
         onClick={() => window.location.reload()}
-        className="w-full border-2 border-slate-300 text-slate-600 font-semibold py-3 rounded-xl hover:bg-slate-50 transition-colors"
+        className="w-full py-3 text-sm font-semibold transition-colors hover:bg-gray-50"
+        style={{ border: `1px solid #e0e4eb`, color: NAVY, borderRadius: '2px', background: '#fff' }}
       >
         Купить ещё один билет
       </button>

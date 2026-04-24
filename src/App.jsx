@@ -1,59 +1,78 @@
 import { useState } from 'react'
+import Logo from './components/Logo'
+import SearchForm from './components/SearchForm'
 import FlightCard from './components/FlightCard'
 import BaggageStep from './components/BaggageStep'
 import PaymentStep from './components/PaymentStep'
 import SuccessStep from './components/SuccessStep'
 import ClimateImpactPage from './components/ClimateImpactPage'
 
-const STEPS = ['Рейс', 'Багаж', 'Оплата', 'Готово']
+// step -1 = search, 0..3 = booking flow
+const FLOW_STEPS = ['Рейс', 'Багаж', 'Оплата', 'Готово']
+const NAVY = '#1B2B4B'
+const GOLD = '#B09040'
 
 export default function App() {
-  const [tab, setTab] = useState('booking')
-  const [step, setStep] = useState(0)
-  const [baggageKg, setBaggageKg] = useState(23)
-  const [roundUp, setRoundUp] = useState(false)
+  const [tab,  setTab]  = useState('booking')
+  const [step, setStep] = useState(-1)
+  const [baggageKg,  setBaggageKg]  = useState(23)
+  const [roundUp,    setRoundUp]    = useState(false)
 
-  const basePrice = 52377
-  const baggageFee = baggageKg > 23 ? (baggageKg - 23) * 900 : 0
-  const subtotal = basePrice + baggageFee
+  const basePrice    = 52377
+  const baggageFee   = baggageKg > 23 ? (baggageKg - 23) * 900 : 0
+  const subtotal     = basePrice + baggageFee
   const roundedTotal = Math.ceil(subtotal / 1000) * 1000
-  const donation = roundedTotal - subtotal
-  const total = roundUp ? roundedTotal : subtotal
+  const donation     = roundedTotal - subtotal
+  const total        = roundUp ? roundedTotal : subtotal
+
+  function handleSearch() {
+    setStep(0)
+  }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-sky-50 to-slate-100 pb-20">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b border-slate-200 sticky top-0 z-30">
-        <div className="max-w-2xl mx-auto px-4 py-4 flex items-center gap-3">
-          <div className="flex items-center gap-1">
-            <span className="text-sky-700 font-bold text-xl tracking-tight">Air</span>
-            <span className="text-slate-800 font-bold text-xl tracking-tight">Astana</span>
-          </div>
-          <div className="ml-auto flex items-center gap-1 bg-green-50 text-green-700 text-xs font-medium px-3 py-1 rounded-full border border-green-200">
-            <span>🌿</span>
-            <span>GreenFlight</span>
+    <div className="min-h-screen pb-20" style={{ background: '#f2f4f7' }}>
+
+      {/* ── Top header bar ── */}
+      <header className="bg-white border-b sticky top-0 z-30" style={{ borderColor: '#e0e4eb' }}>
+        <div className="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
+          <button onClick={() => { setTab('booking'); setStep(-1) }}>
+            <Logo height={36} />
+          </button>
+          <div
+            className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5"
+            style={{ background: '#f5edd6', color: GOLD, border: `1px solid #e0c97a`, borderRadius: '2px' }}
+          >
+            🌿 GreenFlight
           </div>
         </div>
       </header>
 
-      {/* Booking steps bar — only visible on booking tab */}
-      {tab === 'booking' && (
-        <div className="bg-white border-b border-slate-200">
-          <div className="max-w-2xl mx-auto px-4 py-3">
+      {/* ── Step progress bar (only during booking flow after search) ── */}
+      {tab === 'booking' && step >= 0 && (
+        <div className="bg-white border-b" style={{ borderColor: '#e0e4eb' }}>
+          <div className="max-w-3xl mx-auto px-4 py-3">
             <div className="flex items-center">
-              {STEPS.map((label, i) => (
+              {FLOW_STEPS.map((label, i) => (
                 <div key={i} className="flex items-center flex-1 last:flex-none">
                   <div className="flex items-center gap-2">
-                    <div className={`w-7 h-7 rounded-full flex items-center justify-center text-sm font-semibold transition-all
-                      ${i < step ? 'bg-green-500 text-white' : i === step ? 'bg-sky-600 text-white' : 'bg-slate-200 text-slate-400'}`}>
+                    <div
+                      className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all"
+                      style={{
+                        background: i < step ? GOLD : i === step ? NAVY : '#e0e4eb',
+                        color: i <= step ? '#fff' : '#9aa5b4',
+                      }}
+                    >
                       {i < step ? '✓' : i + 1}
                     </div>
-                    <span className={`text-sm hidden sm:block ${i === step ? 'text-sky-700 font-medium' : i < step ? 'text-green-600' : 'text-slate-400'}`}>
+                    <span
+                      className="text-sm hidden sm:block"
+                      style={{ color: i === step ? NAVY : i < step ? GOLD : '#9aa5b4', fontWeight: i === step ? 600 : 400 }}
+                    >
                       {label}
                     </span>
                   </div>
-                  {i < STEPS.length - 1 && (
-                    <div className={`flex-1 h-0.5 mx-2 ${i < step ? 'bg-green-400' : 'bg-slate-200'}`} />
+                  {i < FLOW_STEPS.length - 1 && (
+                    <div className="flex-1 h-px mx-2" style={{ background: i < step ? GOLD : '#e0e4eb' }} />
                   )}
                 </div>
               ))}
@@ -62,56 +81,85 @@ export default function App() {
         </div>
       )}
 
-      <main className="max-w-2xl mx-auto px-4 py-6">
+      <main className="max-w-3xl mx-auto px-4 py-5">
+
+        {/* ══ BOOKING TAB ══ */}
         {tab === 'booking' && (
           <>
+            {/* Search screen */}
+            {step === -1 && (
+              <div className="space-y-0">
+                {/* Hero banner */}
+                <div
+                  className="relative overflow-hidden flex items-end"
+                  style={{
+                    background: `linear-gradient(135deg, ${NAVY} 0%, #2d4a7a 60%, #3a5f9a 100%)`,
+                    height: '160px',
+                    borderRadius: '0',
+                  }}
+                >
+                  {/* Decorative circles */}
+                  <div className="absolute -top-8 -right-8 w-48 h-48 rounded-full opacity-10" style={{ background: GOLD }} />
+                  <div className="absolute -bottom-12 right-16 w-32 h-32 rounded-full opacity-5" style={{ background: '#fff' }} />
+                  <div className="px-6 pb-5 z-10">
+                    <p className="text-white/60 text-sm">Добро пожаловать</p>
+                    <p className="text-white text-2xl font-bold mt-0.5">Из Казахстана</p>
+                    <div
+                      className="inline-flex items-center gap-1.5 mt-2 text-xs font-semibold px-2.5 py-1"
+                      style={{ background: 'rgba(176,144,64,0.25)', color: '#e8c96a', border: '1px solid rgba(176,144,64,0.4)', borderRadius: '2px' }}
+                    >
+                      🌿 Зелёные рейсы доступны
+                    </div>
+                  </div>
+                </div>
+
+                {/* Search form sits flush below hero */}
+                <SearchForm onSearch={handleSearch} />
+              </div>
+            )}
+
             {step === 0 && <FlightCard onNext={() => setStep(1)} />}
             {step === 1 && (
               <BaggageStep
-                baggageKg={baggageKg}
-                setBaggageKg={setBaggageKg}
+                baggageKg={baggageKg} setBaggageKg={setBaggageKg}
                 baggageFee={baggageFee}
-                onNext={() => setStep(2)}
-                onBack={() => setStep(0)}
+                onNext={() => setStep(2)} onBack={() => setStep(0)}
               />
             )}
             {step === 2 && (
               <PaymentStep
-                basePrice={basePrice}
-                baggageFee={baggageFee}
-                subtotal={subtotal}
-                roundUp={roundUp}
-                setRoundUp={setRoundUp}
-                donation={donation}
-                total={total}
-                roundedTotal={roundedTotal}
-                onNext={() => setStep(3)}
-                onBack={() => setStep(1)}
+                basePrice={basePrice} baggageFee={baggageFee}
+                subtotal={subtotal} roundUp={roundUp} setRoundUp={setRoundUp}
+                donation={donation} total={total} roundedTotal={roundedTotal}
+                onNext={() => setStep(3)} onBack={() => setStep(1)}
               />
             )}
             {step === 3 && <SuccessStep total={total} roundUp={roundUp} donation={donation} />}
           </>
         )}
 
+        {/* ══ IMPACT TAB ══ */}
         {tab === 'impact' && <ClimateImpactPage />}
       </main>
 
-      {/* Bottom tab bar */}
-      <nav className="fixed bottom-0 inset-x-0 bg-white border-t border-slate-200 z-30">
-        <div className="max-w-2xl mx-auto flex">
+      {/* ── Bottom tab bar ── */}
+      <nav className="fixed bottom-0 inset-x-0 bg-white border-t z-30" style={{ borderColor: '#e0e4eb' }}>
+        <div className="max-w-3xl mx-auto flex">
           {[
-            { id: 'booking', icon: '🎫', label: 'Билеты' },
-            { id: 'impact', icon: '🌿', label: 'Мой вклад' },
+            { id: 'booking', icon: '🎫', label: 'Бронирование' },
+            { id: 'impact',  icon: '🌿', label: 'Мой вклад' },
           ].map(t => (
             <button
               key={t.id}
               onClick={() => setTab(t.id)}
-              className={`flex-1 flex flex-col items-center gap-1 py-3 text-xs font-medium transition-colors
-                ${tab === t.id ? 'text-green-600' : 'text-slate-400 hover:text-slate-600'}`}
+              className="relative flex-1 flex flex-col items-center gap-1 py-2.5 text-xs font-medium transition-colors"
+              style={{ color: tab === t.id ? GOLD : '#9aa5b4' }}
             >
+              {tab === t.id && (
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-10 h-0.5" style={{ background: GOLD }} />
+              )}
               <span className="text-xl leading-none">{t.icon}</span>
               <span>{t.label}</span>
-              {tab === t.id && <div className="absolute bottom-0 w-12 h-0.5 bg-green-500 rounded-full" />}
             </button>
           ))}
         </div>
