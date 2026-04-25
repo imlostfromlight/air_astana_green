@@ -10,7 +10,7 @@ const OPTIONS = [
 function co2Tip(kg) {
   if (kg === 0)  return { text: 'Отлично! Минимальный багаж снижает вес самолёта и экономит топливо.', level: 'great' }
   if (kg === 23) return { text: 'Хороший выбор. Стандартный багаж — оптимальный баланс.', level: 'ok' }
-  return { text: 'Тяжёлый багаж увеличивает расход топлива. Взяли бы только нужное — самолёт потратит меньше топлива и меньше CO₂ попадёт в атмосферу.', level: 'warn' }
+  return { text: 'Чем меньше багажа, тем экономичнее перелёт. Если есть возможность, берите только необходимое — это поможет сократить расход топлива и снизить выбросы CO₂.', level: 'warn' }
 }
 
 export default function BaggageStep({ baggageKg, setBaggageKg, baggageFee, onNext, onBack }) {
@@ -75,12 +75,12 @@ export default function BaggageStep({ baggageKg, setBaggageKg, baggageFee, onNex
         <span className="text-lg mt-0.5">{tip.level === 'warn' ? '⚠️' : '🌿'}</span>
         <div>
           <p className="text-sm font-semibold" style={{ color: NAVY }}>
-            {tip.level === 'warn' ? 'Возьмите меньше багажа' : 'Экологичный выбор'}
+            {tip.level === 'warn' ? 'Совет об экологии' : 'Экологичный выбор'}
           </p>
           <p className="text-xs mt-0.5 text-gray-500">{tip.text}</p>
           {tip.level === 'warn' && (
             <p className="text-xs mt-1.5 font-medium" style={{ color: GOLD }}>
-              💡 Каждый лишний кг на борту — дополнительные граммы CO₂ в атмосфере
+              💡 Меньше веса на борту — меньше углеродного следа вашего путешествия
             </p>
           )}
         </div>
