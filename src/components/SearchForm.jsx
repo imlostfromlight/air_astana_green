@@ -5,7 +5,7 @@ const GOLD = '#B09040'
 
 const AIRPORTS = [
   { city: 'Алматы',    code: 'ALA', country: 'Казахстан' },
-  { city: 'Астана',    code: 'TSE', country: 'Казахстан' },
+  { city: 'Астана',    code: 'NQZ', country: 'Казахстан' },
   { city: 'Актау',     code: 'SCO', country: 'Казахстан' },
   { city: 'Актобе',    code: 'AKX', country: 'Казахстан' },
   { city: 'Атырау',    code: 'GUW', country: 'Казахстан' },

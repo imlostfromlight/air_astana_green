@@ -37,7 +37,7 @@ export default function FlightCard({ onNext }) {
             </div>
             <div className="text-right">
               <p className="text-2xl sm:text-3xl font-bold" style={{ color: NAVY }}>08:15</p>
-              <p className="text-sm sm:text-base font-semibold mt-0.5" style={{ color: NAVY }}>TSE</p>
+              <p className="text-sm sm:text-base font-semibold mt-0.5" style={{ color: NAVY }}>NQZ</p>
               <p className="text-xs text-gray-400">Астана</p>
             </div>
           </div>

@@ -5,11 +5,11 @@ const GOLD = '#B09040'
 const KZT_PER_TONNE = 8750
 
 const FLIGHTS = [
-  { id: 1, date: '2026-01-12', route: 'ALA → TSE', flight: 'KC 121', donated: 623 },
-  { id: 2, date: '2026-01-28', route: 'TSE → ALA', flight: 'KC 122', donated: 1000 },
+  { id: 1, date: '2026-01-12', route: 'ALA → NQZ', flight: 'KC 121', donated: 623 },
+  { id: 2, date: '2026-01-28', route: 'NQZ → ALA', flight: 'KC 122', donated: 1000 },
   { id: 3, date: '2026-02-14', route: 'ALA → DXB', flight: 'KC 931', donated: 2500 },
   { id: 4, date: '2026-03-05', route: 'DXB → ALA', flight: 'KC 932', donated: 2500 },
-  { id: 5, date: '2026-04-24', route: 'ALA → TSE', flight: 'KC 121', donated: 623 },
+  { id: 5, date: '2026-04-24', route: 'ALA → NQZ', flight: 'KC 121', donated: 623 },
 ]
 
 const MONTHLY = [
