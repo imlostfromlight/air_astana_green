@@ -30,12 +30,12 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen pb-20" style={{ background: '#f2f4f7' }}>
+    <div className="min-h-screen" style={{ background: '#f2f4f7', paddingBottom: 'calc(72px + env(safe-area-inset-bottom, 0px))' }}>
 
       {/* ── Top header bar ── */}
       <header className="bg-white border-b sticky top-0 z-30" style={{ borderColor: '#e0e4eb' }}>
         <div className="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
-          <button onClick={() => { setTab('booking'); setStep(-1) }}>
+          <button onClick={() => { setTab('booking'); setStep(-1) }} className="py-1.5 -my-1.5">
             <Logo height={36} />
           </button>
           <div
@@ -47,17 +47,18 @@ export default function App() {
         </div>
       </header>
 
-      {/* ── Step progress bar (only during booking flow after search) ── */}
+      {/* ── Step progress bar ── */}
       {tab === 'booking' && step >= 0 && (
         <div className="bg-white border-b" style={{ borderColor: '#e0e4eb' }}>
-          <div className="max-w-3xl mx-auto px-4 py-3">
+          <div className="max-w-3xl mx-auto px-4 py-2.5">
             <div className="flex items-center">
               {FLOW_STEPS.map((label, i) => (
                 <div key={i} className="flex items-center flex-1 last:flex-none">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1.5">
                     <div
-                      className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all"
+                      className="flex items-center justify-center rounded-full text-xs font-bold shrink-0"
                       style={{
+                        width: 24, height: 24,
                         background: i < step ? GOLD : i === step ? NAVY : '#e0e4eb',
                         color: i <= step ? '#fff' : '#9aa5b4',
                       }}
@@ -65,14 +66,14 @@ export default function App() {
                       {i < step ? '✓' : i + 1}
                     </div>
                     <span
-                      className="text-sm hidden sm:block"
+                      className="text-xs hidden sm:block"
                       style={{ color: i === step ? NAVY : i < step ? GOLD : '#9aa5b4', fontWeight: i === step ? 600 : 400 }}
                     >
                       {label}
                     </span>
                   </div>
                   {i < FLOW_STEPS.length - 1 && (
-                    <div className="flex-1 h-px mx-2" style={{ background: i < step ? GOLD : '#e0e4eb' }} />
+                    <div className="flex-1 h-px mx-1.5" style={{ background: i < step ? GOLD : '#e0e4eb' }} />
                   )}
                 </div>
               ))}
@@ -94,18 +95,14 @@ export default function App() {
                   className="relative overflow-hidden flex items-end"
                   style={{
                     background: `linear-gradient(135deg, ${NAVY} 0%, #2d4a7a 60%, #3a5f9a 100%)`,
-                    height: '160px',
-                    borderRadius: '0',
+                    height: '110px',
                   }}
                 >
-                  {/* Decorative circles */}
-                  <div className="absolute -top-8 -right-8 w-48 h-48 rounded-full opacity-10" style={{ background: GOLD }} />
-                  <div className="absolute -bottom-12 right-16 w-32 h-32 rounded-full opacity-5" style={{ background: '#fff' }} />
-                  <div className="px-6 pb-5 z-10">
-                    <p className="text-white/60 text-sm">Добро пожаловать</p>
-                    <p className="text-white text-2xl font-bold mt-0.5">Из Казахстана</p>
+                  <div className="absolute -top-6 -right-6 w-36 h-36 rounded-full opacity-10" style={{ background: GOLD }} />
+                  <div className="px-4 pb-4 z-10">
+                    <p className="text-white text-lg sm:text-xl font-bold">Из Казахстана</p>
                     <div
-                      className="inline-flex items-center gap-1.5 mt-2 text-xs font-semibold px-2.5 py-1"
+                      className="inline-flex items-center gap-1 mt-1.5 text-xs font-semibold px-2 py-0.5"
                       style={{ background: 'rgba(176,144,64,0.25)', color: '#e8c96a', border: '1px solid rgba(176,144,64,0.4)', borderRadius: '2px' }}
                     >
                       🌿 Зелёные рейсы доступны
@@ -143,7 +140,10 @@ export default function App() {
       </main>
 
       {/* ── Bottom tab bar ── */}
-      <nav className="fixed bottom-0 inset-x-0 bg-white border-t z-30" style={{ borderColor: '#e0e4eb' }}>
+      <nav
+        className="fixed bottom-0 inset-x-0 bg-white border-t z-30"
+        style={{ borderColor: '#e0e4eb', paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
+      >
         <div className="max-w-3xl mx-auto flex">
           {[
             { id: 'booking', icon: '🎫', label: 'Бронирование' },

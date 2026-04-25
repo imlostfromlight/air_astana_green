@@ -24,14 +24,14 @@ export default function BaggageStep({ baggageKg, setBaggageKg, baggageFee, onNex
           <p className="text-xs text-gray-400 mt-0.5">Алматы → Астана · 1 пассажир · 25 апреля 2026</p>
         </div>
 
-        <div className="p-4 space-y-2.5">
+        <div className="p-3 sm:p-4 space-y-2.5">
           {OPTIONS.map(opt => {
             const selected = baggageKg === opt.kg
             return (
               <button
                 key={opt.kg}
                 onClick={() => setBaggageKg(opt.kg)}
-                className="w-full flex items-center gap-4 p-4 text-left transition-all"
+                className="w-full flex items-center gap-3 sm:gap-4 p-3 sm:p-4 text-left transition-all"
                 style={{
                   border: `2px solid ${selected ? GOLD : '#e0e4eb'}`,
                   background: selected ? '#fdf8ee' : '#fff',
@@ -89,14 +89,14 @@ export default function BaggageStep({ baggageKg, setBaggageKg, baggageFee, onNex
       <div className="flex gap-3">
         <button
           onClick={onBack}
-          className="flex-1 py-3 text-sm font-semibold transition-colors hover:bg-gray-50"
-          style={{ border: `1px solid #e0e4eb`, color: NAVY, borderRadius: '2px', background: '#fff' }}
+          className="py-3 text-sm font-semibold transition-colors active:bg-gray-50"
+          style={{ border: `1px solid #e0e4eb`, color: NAVY, borderRadius: '2px', background: '#fff', minWidth: 80 }}
         >
           ← Назад
         </button>
         <button
           onClick={onNext}
-          className="grow py-3 text-sm font-semibold uppercase tracking-wide transition-opacity hover:opacity-90"
+          className="flex-1 py-3.5 text-sm font-semibold uppercase tracking-wide transition-opacity active:opacity-75"
           style={{ background: GOLD, color: '#fff', borderRadius: '2px' }}
         >
           Продолжить

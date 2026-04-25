@@ -39,13 +39,13 @@ function ShareModal({ onClose, totalKg, totalKzt, trees, km }) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4"
-      style={{ background: 'rgba(0,0,0,0.55)' }}
+      className="fixed inset-0 z-50 flex items-end justify-center"
+      style={{ background: 'rgba(0,0,0,0.55)', paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
       onClick={onClose}
     >
-      <div className="w-full max-w-sm" onClick={e => e.stopPropagation()}>
+      <div className="w-full" style={{ maxWidth: '480px', padding: '0 0' }} onClick={e => e.stopPropagation()}>
         {/* Story card */}
-        <div className="rounded overflow-hidden shadow-2xl" style={{ background: NAVY }}>
+        <div className="overflow-hidden shadow-2xl" style={{ background: NAVY, borderRadius: '16px 16px 0 0' }}>
           {/* Header */}
           <div className="px-6 pt-5 pb-3 flex items-center justify-between border-b" style={{ borderColor: 'rgba(255,255,255,0.08)' }}>
             <div className="flex items-center gap-2">
@@ -67,7 +67,7 @@ function ShareModal({ onClose, totalKg, totalKzt, trees, km }) {
             <p className="text-xs font-semibold uppercase tracking-widest" style={{ color: GOLD }}>
               Мой вклад в природу
             </p>
-            <p className="text-7xl font-black text-white mt-2 leading-none">{totalKg}</p>
+            <p className="text-5xl sm:text-7xl font-black text-white mt-2 leading-none">{totalKg}</p>
             <p className="text-lg font-medium mt-1" style={{ color: 'rgba(255,255,255,0.6)' }}>кг CO₂ компенсировано</p>
           </div>
 
@@ -80,8 +80,8 @@ function ShareModal({ onClose, totalKg, totalKzt, trees, km }) {
             ].map(s => (
               <div key={s.label} className="py-4 text-center" style={{ background: NAVY }}>
                 <p className="text-xl">{s.icon}</p>
-                <p className="text-white font-bold text-sm mt-1">{s.val}</p>
-                <p className="text-xs" style={{ color: 'rgba(255,255,255,0.45)' }}>{s.label}</p>
+                <p className="text-white font-bold text-xs sm:text-sm mt-1 wrap-break-word">{s.val}</p>
+                <p className="text-[10px] sm:text-xs" style={{ color: 'rgba(255,255,255,0.45)' }}>{s.label}</p>
               </div>
             ))}
           </div>
@@ -93,12 +93,16 @@ function ShareModal({ onClose, totalKg, totalKzt, trees, km }) {
 
         <button
           onClick={handleShare}
-          className="mt-3 w-full py-4 text-sm font-bold uppercase tracking-wide transition-opacity hover:opacity-90"
-          style={{ background: GOLD, color: '#fff', borderRadius: '2px' }}
+          className="w-full py-4 text-sm font-bold uppercase tracking-wide transition-opacity active:opacity-75"
+          style={{ background: GOLD, color: '#fff', borderRadius: '0' }}
         >
           {copied ? '✓ Скопировано!' : navigator.share ? '📤 Поделиться' : '📋 Скопировать текст'}
         </button>
-        <button onClick={onClose} className="mt-2 w-full py-2 text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>
+        <button
+          onClick={onClose}
+          className="w-full py-4 text-sm"
+          style={{ background: NAVY, color: 'rgba(255,255,255,0.45)' }}
+        >
           Закрыть
         </button>
       </div>
@@ -135,15 +139,15 @@ export default function ClimateImpactPage() {
           </span>
         </div>
 
-        <div className="px-5 py-4 flex items-center justify-between gap-4">
-          <div>
+        <div className="px-5 py-4 flex items-center justify-between gap-3">
+          <div className="min-w-0 flex-1">
             <p className="text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>Всего компенсировано</p>
             <div className="flex items-end gap-1 mt-1">
-              <span className="text-5xl font-black text-white leading-none">{totalKg}</span>
-              <span className="text-xl font-bold mb-1" style={{ color: GOLD }}>кг</span>
+              <span className="text-4xl sm:text-5xl font-black text-white leading-none">{totalKg}</span>
+              <span className="text-lg sm:text-xl font-bold mb-1" style={{ color: GOLD }}>кг</span>
             </div>
             <p className="text-sm mt-0.5" style={{ color: 'rgba(255,255,255,0.45)' }}>CO₂ · ≈ {totalTonnes} т</p>
-            <p className="text-xs mt-1" style={{ color: GOLD }}>{fmt(totalKzt)} ₸ передано в Green Fund</p>
+            <p className="text-xs mt-1 wrap-break-word" style={{ color: GOLD }}>{fmt(totalKzt)} ₸ → Green Fund</p>
           </div>
 
           {/* Progress ring */}
@@ -179,8 +183,8 @@ export default function ClimateImpactPage() {
               style={{ borderRight: i < 2 ? '1px solid rgba(255,255,255,0.08)' : 'none' }}
             >
               <p className="text-base">{s.icon}</p>
-              <p className="font-bold text-sm mt-0.5 text-white">{s.val}</p>
-              <p className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>{s.label}</p>
+              <p className="font-bold text-xs sm:text-sm mt-0.5 text-white wrap-break-word">{s.val}</p>
+              <p className="text-[10px] sm:text-xs leading-tight mt-0.5" style={{ color: 'rgba(255,255,255,0.4)' }}>{s.label}</p>
             </div>
           ))}
         </div>
@@ -200,26 +204,27 @@ export default function ClimateImpactPage() {
             {MONTHLY.length} мес.
           </span>
         </div>
-        <div className="px-5 pt-5 pb-4">
-          <div className="flex items-end gap-4" style={{ height: 100 }}>
+        <div className="px-4 pt-5 pb-4">
+          <div className="flex items-end gap-3" style={{ height: 110 }}>
             {MONTHLY.map(m => {
               const heightPct = Math.round((m.kzt / maxMonthly) * 100)
               const kg = kgCO2(m.kzt)
               return (
-                <div key={m.month} className="flex-1 flex flex-col items-center gap-1">
-                  <span className="text-xs font-medium" style={{ color: GOLD }}>{kg}кг</span>
-                  <div className="w-full flex items-end" style={{ height: 60 }}>
+                <div key={m.month} className="flex-1 flex flex-col items-center gap-1 min-w-0">
+                  <span className="text-[10px] sm:text-xs font-semibold text-center" style={{ color: GOLD }}>{kg} кг</span>
+                  <div className="w-full flex items-end" style={{ height: 64 }}>
                     <div
-                      className="w-full transition-all"
+                      className="w-full"
                       style={{
                         height: `${heightPct}%`,
                         background: `linear-gradient(to top, ${NAVY}, #2d4a7a)`,
-                        borderRadius: '2px 2px 0 0',
+                        borderRadius: '3px 3px 0 0',
+                        minHeight: 4,
                       }}
                     />
                   </div>
-                  <span className="text-xs font-semibold" style={{ color: NAVY }}>{m.month}</span>
-                  <span className="text-xs text-gray-400">{fmt(m.kzt)}₸</span>
+                  <span className="text-[10px] sm:text-xs font-bold" style={{ color: NAVY }}>{m.month}</span>
+                  <span className="text-[10px] sm:text-xs text-center" style={{ color: '#9aa5b4' }}>{fmt(m.kzt)}₸</span>
                 </div>
               )
             })}
@@ -240,30 +245,27 @@ export default function ClimateImpactPage() {
             return (
               <div
                 key={f.id}
-                className="px-5 py-3.5 flex items-center gap-3"
+                className="px-4 py-3 flex items-center gap-3"
                 style={{ borderBottom: i < FLIGHTS.length - 1 ? '1px solid #e0e4eb' : 'none' }}
               >
                 <div
-                  className="w-9 h-9 rounded-full flex items-center justify-center shrink-0 text-sm"
-                  style={{ background: '#f5edd6', border: `1px solid #e8d5a0` }}
+                  className="flex items-center justify-center shrink-0"
+                  style={{ width: 36, height: 36, borderRadius: '50%', background: '#f5edd6', border: `1px solid #e8d5a0`, fontSize: 16 }}
                 >
                   ✈️
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-baseline gap-1.5 flex-wrap">
                     <span className="font-semibold text-sm" style={{ color: NAVY }}>{f.route}</span>
-                    <span className="text-xs text-gray-400">{f.flight}</span>
+                    <span className="text-xs" style={{ color: '#9aa5b4' }}>{f.flight}</span>
                   </div>
-                  <p className="text-xs text-gray-400 mt-0.5">
-                    {new Date(f.date).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })}
+                  <p className="text-xs mt-0.5" style={{ color: '#9aa5b4' }}>
+                    {new Date(f.date).toLocaleDateString('ru-RU', { day: 'numeric', month: 'short', year: 'numeric' })}
                   </p>
                 </div>
                 <div className="text-right shrink-0">
-                  <p className="text-sm font-bold" style={{ color: '#16a34a' }}>+{kg} кг CO₂</p>
-                  <p className="text-xs text-gray-400">итого {cumulative} кг</p>
-                </div>
-                <div className="text-right shrink-0 w-14">
-                  <p className="text-xs font-semibold" style={{ color: GOLD }}>{fmt(f.donated)} ₸</p>
+                  <p className="text-sm font-bold" style={{ color: '#16a34a' }}>+{kg} кг</p>
+                  <p className="text-xs" style={{ color: GOLD }}>{fmt(f.donated)} ₸</p>
                 </div>
               </div>
             )

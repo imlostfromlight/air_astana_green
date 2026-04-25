@@ -47,14 +47,14 @@ export default function SuccessStep({ total, roundUp, donation }) {
               Вы передали <span className="font-semibold" style={{ color: GOLD }}>{fmt(donation)} ₸</span> в фонд компенсации выбросов CO₂
             </p>
           </div>
-          <div className="grid grid-cols-3 divide-x border-t" style={{ borderColor: '#e8d5a0', divideColor: '#e8d5a0' }}>
+          <div className="grid grid-cols-3 border-t" style={{ borderColor: '#e8d5a0' }}>
             {[
               { icon: '🌱', val: '1',     label: 'рейс' },
               { icon: '🌳', val: '4',     label: 'дерева' },
               { icon: '💨', val: '87 кг', label: 'CO₂' },
-            ].map(s => (
-              <div key={s.label} className="py-3 text-center">
-                <p className="text-lg">{s.icon}</p>
+            ].map((s, i) => (
+              <div key={s.label} className="py-3 text-center" style={{ borderRight: i < 2 ? `1px solid #e8d5a0` : 'none' }}>
+                <p className="text-xl">{s.icon}</p>
                 <p className="font-bold text-sm mt-0.5" style={{ color: NAVY }}>{s.val}</p>
                 <p className="text-xs text-gray-400">{s.label}</p>
               </div>

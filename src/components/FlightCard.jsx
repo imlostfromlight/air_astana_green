@@ -17,15 +17,15 @@ export default function FlightCard({ onNext }) {
           </span>
         </div>
 
-        <div className="px-5 py-5">
+        <div className="px-4 sm:px-5 py-4 sm:py-5">
           {/* Route */}
           <div className="flex items-center justify-between mb-4">
             <div>
-              <p className="text-3xl font-bold" style={{ color: NAVY }}>06:30</p>
-              <p className="text-base font-semibold mt-0.5" style={{ color: NAVY }}>ALA</p>
+              <p className="text-2xl sm:text-3xl font-bold" style={{ color: NAVY }}>06:30</p>
+              <p className="text-sm sm:text-base font-semibold mt-0.5" style={{ color: NAVY }}>ALA</p>
               <p className="text-xs text-gray-400">Алматы</p>
             </div>
-            <div className="flex-1 mx-5 flex flex-col items-center gap-1">
+            <div className="flex-1 mx-2 sm:mx-5 flex flex-col items-center gap-1">
               <p className="text-xs text-gray-400">1ч 45м · Прямой</p>
               <div className="w-full flex items-center gap-1">
                 <div className="flex-1 h-px" style={{ background: '#e0e4eb' }} />
@@ -36,8 +36,8 @@ export default function FlightCard({ onNext }) {
               </div>
             </div>
             <div className="text-right">
-              <p className="text-3xl font-bold" style={{ color: NAVY }}>08:15</p>
-              <p className="text-base font-semibold mt-0.5" style={{ color: NAVY }}>TSE</p>
+              <p className="text-2xl sm:text-3xl font-bold" style={{ color: NAVY }}>08:15</p>
+              <p className="text-sm sm:text-base font-semibold mt-0.5" style={{ color: NAVY }}>TSE</p>
               <p className="text-xs text-gray-400">Астана</p>
             </div>
           </div>
@@ -56,14 +56,14 @@ export default function FlightCard({ onNext }) {
           </div>
 
           {/* Price + CTA */}
-          <div className="flex items-center justify-between pt-4 border-t" style={{ borderColor: '#e0e4eb' }}>
-            <div>
+          <div className="flex items-center gap-3 sm:gap-4 pt-4 border-t" style={{ borderColor: '#e0e4eb' }}>
+            <div className="shrink-0">
               <p className="text-xs text-gray-400 mb-0.5">Цена за 1 пассажира</p>
-              <p className="text-2xl font-bold" style={{ color: NAVY }}>52 377 ₸</p>
+              <p className="text-xl sm:text-2xl font-bold" style={{ color: NAVY }}>52 377 ₸</p>
             </div>
             <button
               onClick={onNext}
-              className="font-semibold px-7 py-3 text-sm uppercase tracking-wide transition-opacity hover:opacity-90"
+              className="flex-1 font-semibold py-3.5 text-sm uppercase tracking-wide transition-opacity active:opacity-75"
               style={{ background: GOLD, color: '#fff', borderRadius: '2px' }}
             >
               Выбрать

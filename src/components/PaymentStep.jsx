@@ -101,18 +101,18 @@ export default function PaymentStep({
       {/* CO₂ stats row */}
       <div className="grid grid-cols-3 gap-2">
         {[
-          { icon: '✈️', label: 'Выброс рейса', value: '~87 кг CO₂' },
-          { icon: '🌳', label: 'Деревьев на год', value: '4 дерева' },
+          { icon: '✈️', label: 'Выброс рейса', value: '87 кг CO₂' },
+          { icon: '🌳', label: 'Деревьев/год', value: '4 дерева' },
           { icon: '💚', label: 'Ваш взнос', value: roundUp ? `${fmt(donation)} ₸` : '0 ₸', highlight: roundUp },
         ].map(s => (
           <div
             key={s.label}
-            className="p-3 text-center border rounded"
-            style={{ background: '#fff', borderColor: '#e0e4eb' }}
+            className="py-3 px-1 text-center border"
+            style={{ background: '#fff', borderColor: '#e0e4eb', borderRadius: '2px' }}
           >
-            <p className="text-xl">{s.icon}</p>
-            <p className="text-xs text-gray-400 mt-1">{s.label}</p>
-            <p className="text-sm font-bold mt-0.5" style={{ color: s.highlight ? '#16a34a' : NAVY }}>
+            <p className="text-base sm:text-lg">{s.icon}</p>
+            <p className="text-[10px] sm:text-xs mt-1 leading-tight" style={{ color: '#9aa5b4' }}>{s.label}</p>
+            <p className="text-[10px] sm:text-xs font-bold mt-1 leading-tight wrap-break-word" style={{ color: s.highlight ? '#16a34a' : NAVY }}>
               {s.value}
             </p>
           </div>
@@ -122,14 +122,14 @@ export default function PaymentStep({
       <div className="flex gap-3">
         <button
           onClick={onBack}
-          className="flex-1 py-3 text-sm font-semibold transition-colors hover:bg-gray-50"
-          style={{ border: `1px solid #e0e4eb`, color: NAVY, borderRadius: '2px', background: '#fff' }}
+          className="py-3 text-sm font-semibold transition-colors active:bg-gray-50"
+          style={{ border: `1px solid #e0e4eb`, color: NAVY, borderRadius: '2px', background: '#fff', minWidth: 80 }}
         >
           ← Назад
         </button>
         <button
           onClick={onNext}
-          className="grow py-3.5 text-sm font-bold uppercase tracking-wide transition-opacity hover:opacity-90"
+          className="flex-1 py-3.5 text-sm font-bold uppercase tracking-wide transition-opacity active:opacity-75"
           style={{ background: GOLD, color: '#fff', borderRadius: '2px' }}
         >
           Оплатить {fmt(total)} ₸
